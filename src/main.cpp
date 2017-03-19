@@ -996,8 +996,13 @@ int64_t GetProofOfWorkReward(int64_t nFees)
     {
         nSubsidy = 0.01 * COIN;
     }
- 
-    
+    // hardCap v2.1
+    else if(pindexBest->nMoneySupply > MAX_MONEY)
+    {
+        LogPrint("MINEOUT", "GetProofOfWorkReward(): create=%s nFees=%d\n", FormatMoney(nFees), nFees);
+        return nFees;
+    }
+
     if (fDebug && GetBoolArg("-printcreation"))
         printf("GetProofOfWorkReward() : create=%s nSubsidy=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nSubsidy);
 
@@ -1010,17 +1015,23 @@ int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees)
     static int64_t nRewardCoinYear = 250 * CENT;  // creation amount per coin-year [250% Starting | ~5000% Peak]
     int64_t nSubsidy = nCoinAge * 33 / (365 * 33 + 8) * nRewardCoinYear;
 
-if(nBestHeight < 600001)
+    if(nBestHeight < 600001)
     {
         nSubsidy <<= (nBestHeight / 20000); // Doubling every 20k blocks until block 600K | doubles 30 times
     }
-else if(nBestHeight > 600000)
+    else if(nBestHeight > 600000)
     {
         nSubsidy >>= (nBestHeight - 600000 / 20000); // Halving every 20k blocks until block 1.2M | halves 30 times
         if(nBestHeight > 1200000)
         {
         nSubsidy = nCoinAge * 33 / (365 * 33 + 8) * (150 * CENT); // 150% Forever
         }
+    }
+    // hardCap v2.1
+    else if(pindexBest->nMoneySupply > MAX_MONEY)
+    {
+        LogPrint("MINEOUT", "GetProofOfStakeReward(): create=%s nFees=%d\n", FormatMoney(nFees), nFees);
+        return nFees;
     }
 
     if (fDebug && GetBoolArg("-printcreation"))
