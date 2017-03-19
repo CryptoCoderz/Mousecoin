@@ -999,7 +999,7 @@ int64_t GetProofOfWorkReward(int64_t nFees)
     // hardCap v2.1
     else if(pindexBest->nMoneySupply > MAX_MONEY)
     {
-        LogPrint("MINEOUT", "GetProofOfWorkReward(): create=%s nFees=%d\n", FormatMoney(nFees), nFees);
+        printf("MINEOUT", "GetProofOfWorkReward(): create=%s nFees=%d\n", FormatMoney(nFees), nFees);
         return nFees;
     }
 
@@ -1030,7 +1030,7 @@ int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees)
     // hardCap v2.1
     else if(pindexBest->nMoneySupply > MAX_MONEY)
     {
-        LogPrint("MINEOUT", "GetProofOfStakeReward(): create=%s nFees=%d\n", FormatMoney(nFees), nFees);
+        printf("MINEOUT", "GetProofOfStakeReward(): create=%s nFees=%d\n", FormatMoney(nFees), nFees);
         return nFees;
     }
 
